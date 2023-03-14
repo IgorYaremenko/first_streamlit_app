@@ -9,6 +9,16 @@ def get_fruityvice_data(this_fruit_choice):
   fruityvice_normalized = pd.json_normalize(fruityvice_response.json())
   return fruityvice_normalized
 
+def get_fruit_load_list():
+  with my_cnx.cursor() as my_cur:
+    my_cur.execute("SELECT * FROM FRUIT_LOAD_LIST")
+    return my_data_row = my_cur.fetchall()
+  
+def insert_row_snowflake(new_fruit):
+  with my_cnx.cursor() as my_cur:
+    my_cur.execute("INSERT INTO FRUIT_LOAD_LIST VALUES('from streamlit')")
+    return 'Thanks for adding ' + add_my_fruit
+
 sl.title("My Parents New Healthy Diner")
 
 sl.header('Breakfast Menu')
@@ -38,15 +48,13 @@ try:
 except URLError as e:
   sl.error()
 
-sl.stop()
+if sl.button('Get Fruit Load List'):
+  my_cnx = snowflake.connector.connect(**sl.secrets["snowflake"])
+  my_data_row = get_fruit_load_list()
+  sl.dataframe(my_data_row)
 
-my_cnx = snowflake.connector.connect(**sl.secrets["snowflake"])
-my_cur = my_cnx.cursor()
-my_cur.execute("SELECT * FROM FRUIT_LOAD_LIST")
-my_data_row = my_cur.fetchall()
-sl.text("The fruit load list contains:")
-sl.dataframe(my_data_row)
+add_my_fruit = sl.text_input('What fruit would you like to add?')
+if sl.button('Add a Fruit to the list'):
+  my_cnx = snowflake.connector.connect(**sl.secrets["snowflake"])
+  sl.text(insert_row_snowflake(add_my_fruit))
 
-add_my_fruit = sl.text_input('What fruit would you like to add?','jackfruit')
-sl.write('Thanks for adding '+add_my_fruit)
-my_cur.execute("INSERT INTO FRUIT_LOAD_LIST VALUES('from streamlit')")
