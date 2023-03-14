@@ -40,4 +40,5 @@ sl.text("The fruit load list contains:")
 sl.dataframe(my_data_row)
 
 add_my_fruit = sl.text_input('What fruit would you like to add?','jackfruit')
-sl.text('Thanks for adding '+add_my_fruit)
+sl.write('Thanks for adding '+add_my_fruit)
+my_cur.execut("INSERT INTO FRUIT_LOAD_LIST VALUES('from streamlit')")
