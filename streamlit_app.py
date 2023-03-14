@@ -38,3 +38,6 @@ my_cur.execute("SELECT * FROM FRUIT_LOAD_LIST")
 my_data_row = my_cur.fetchall()
 sl.text("The fruit load list contains:")
 sl.dataframe(my_data_row)
+
+add_my_fruit = sl.text_input('What fruit would you like information about?','jackfruit')
+sl.text('Thanks for adding '+add_my_fruit)
